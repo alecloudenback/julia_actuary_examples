@@ -19,6 +19,7 @@ end
 @with_kw struct Plan
     # credit_rate = 0.05
     coi = tbls["2001 VBT Select and Ultimate - Male Nonsmoker, ANB"]
+    maturity_age
     iter_func
 end
 
@@ -101,7 +102,7 @@ function Base.iterate(proj::Projection)
 end
 
 function Base.iterate(proj::Projection,current_values)
-    if current_values.islapsed
+    if current_values.attained_age == proj.plan.maturity_age - 1
         return nothing
     else
         return current_values, proj.plan.iter_func(proj,current_values)
@@ -117,7 +118,10 @@ p_iter = Projection(
     # Plan Parameters
     Plan(
         tbls["2001 VBT Select and Ultimate - Male Nonsmoker, ANB"],
-        basic_plan),
+        121,
+        basic_plan
+
+        ),
 
     # policy parameters (not yet factored out into struct)
     (issue_date = today(),
