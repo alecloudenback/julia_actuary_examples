@@ -46,7 +46,7 @@ function basic_plan(proj,prior_values)
 
     ## premiums
     if month(date) == month(proj.policy.issue_date)
-        prem = 5000.0
+        prem = proj.policy.premium
     else 
         prem = 0.0
     end
@@ -126,7 +126,8 @@ p_iter = Projection(
     # policy parameters (not yet factored out into struct)
     (issue_date = today(),
     issue_age = 40,
-    spec_amt = 1.0e6,),
+    spec_amt = 1.0e6,
+    premium = 5000.0),
 
     # Date Parameters
     DateParameters()
