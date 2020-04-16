@@ -13,7 +13,7 @@ tbls = MortalityTables.tables()
 @with_kw struct DateParameters
     periodicity = Month(1)
     start_date = today()
-    convention = DayCounts.Actual365  # e.g. DayCounts.jl 30/360, Actual365, etc
+    convention = DayCounts.Actual365Fixed()  # e.g. DayCounts.jl 30/360, Actual365, etc
 end
 
 @with_kw struct Plan
