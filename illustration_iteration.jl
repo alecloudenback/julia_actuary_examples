@@ -7,6 +7,7 @@ using DayCounts
 using Parameters
 using DataFrames
 using MortalityTables
+using Setfield
 
 tbls = MortalityTables.tables()
 
@@ -138,3 +139,18 @@ p_iter = Projection(
 # run the projection
 [x for x in p_iter] |> DataFrame
 
+# return the account value at the end of the specified age
+function av(proj,prem,age)
+    p = @set proj.policy.premium = prem
+    illus = [x for x in p if x.attained_age == age]
+    if size(illus,1) >= 1
+        return illus[end].av
+    else
+        return 0.0
+    end
+end
+
+# solve for the required premium to get to the given age
+using Optim
+
+optimize(x -> sum(av(p_iter,x,100) .^ 2),0.0,1.0e6)
